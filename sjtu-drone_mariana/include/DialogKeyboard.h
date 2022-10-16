@@ -18,10 +18,12 @@ public:
     ~DialogKeyboard();
     void setDrone(DroneObjectROS& drone_){
         this->drone = &drone_;
+        ROS_INFO("SetDrone...");
     }
     void keyPressEvent(QKeyEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
     void testPositionControl();
+    void waypointPose();
 private:
     Ui::DialogKeyboard *ui;
 };

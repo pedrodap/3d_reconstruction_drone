@@ -1,21 +1,34 @@
 cmake_minimum_required(VERSION 3.2.2)
 project(sjtu_drone)
 
+set(CMAKE_CXX_STANDARD 11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS 
     roscpp
+    angles
     rospy
     std_msgs
     sensor_msgs
     image_transport
-    message_generation)
+    message_generation
+    cv_bridge
+    tf
+    tf2
+    tf2_geometry_msgs
+    laser_geometry)
 
 find_package(gazebo REQUIRED)
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(Protobuf REQUIRED)
+find_package(OpenCV REQUIRED
+	COMPONENTS
+	opencv_highgui
+	CONFIG
+)
+find_package(Eigen3 REQUIRED)
 
 include (FindPkgConfig)
 if (PKG_CONFIG_FOUND)
@@ -23,9 +36,11 @@ if (PKG_CONFIG_FOUND)
     pkg_check_modules(OGRE-Terrain OGRE-Terrain)
 endif()
 
+catkin_python_setup()
 
 link_directories(${GAZEBO_LIBRARY_DIRS} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARIES} ${OGRE_LIBRARY_DIRS})
 include_directories(${OpenCV_INCLUDE_DIR} 
+                    ${EIGEN3_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIR}
                     ${catkin_INCLUDE_DIRS}
                     ${GAZEBO_INCLUDE_DIRS}
@@ -33,13 +48,14 @@ include_directories(${OpenCV_INCLUDE_DIR}
                     ${OGRE-Terrain_INCLUDE_DIRS}
                     include)
 
-
+include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 ###################################
 catkin_package(
    INCLUDE_DIRS include
    CATKIN_DEPENDS roscpp rospy image_transport std_msgs sensor_msgs geometry_msgs message_runtime gazebo_ros
+   DEPENDS Boost EIGEN3
 )
 
 ################# 1. A system plugin for gazebo to initialize ROS  #############
@@ -155,22 +171,15 @@ set_target_properties( plugin_ros_sonar
     ${PROJECT_SOURCE_DIR}/plugins
 )
 
-################## 8. A laser sensor plugin for the quadrotor ####################
-#add_library( plugin_ros_laser SHARED
-#    src/plugin_ros_laser.cpp
-#    include/plugin_ros_laser.h
-#)
+################## 9. waypoints ####################
+add_executable( drone_waypoints
+  src/drone_waypoints.cpp
+)
 
-#target_link_libraries( plugin_ros_laser
-#    ${catkin_LIBRARIES}
-#    ${GAZEBO_LIBRARIES}
-#)
-
-#set_target_properties( plugin_ros_laser
-#    PROPERTIES
-#    LIBRARY_OUTPUT_DIRECTORY
-#    ${PROJECT_SOURCE_DIR}/plugins
-#)
+target_link_libraries( drone_waypoints
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES} 
+)
 
 install(DIRECTORY bin
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

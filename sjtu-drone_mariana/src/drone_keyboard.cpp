@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
   ros::NodeHandle node;
   DroneObjectROS drone(node);
   drone.velMode(true);
+
   DialogKeyboard dlg_keyboard;
   dlg_keyboard.setDrone(drone);
   dlg_keyboard.show();

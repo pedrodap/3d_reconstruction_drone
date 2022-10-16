@@ -49,7 +49,7 @@
     </plugin>
   </gazebo>
   <!-- Sensors -->
-  <gazebo>
+  <gazebo reference="base_link">
     	<sensor name='sensor_imu' type='imu'>
         <always_on> 1 </always_on>
         <update_rate> 100 </update_rate>

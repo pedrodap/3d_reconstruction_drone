@@ -1,7 +1,13 @@
 #include <DialogKeyboard.h>
 #include <QtWidgets>
-
+#include<unistd.h>
 #include "ui_DialogKeyboard.h"
+
+int wp=0;
+double vetorwpx[6]={5,2,4,7,2,0};
+double vetorwpy[6]={4,1,6,2,3,0};
+unsigned int microsecond = 1000000;
+
 DialogKeyboard::DialogKeyboard(QWidget *parent)
     : QDialog(parent), ui(new Ui::DialogKeyboard) {
   ui->setupUi(this);
@@ -62,6 +68,9 @@ void DialogKeyboard::keyPressEvent(QKeyEvent *event) {
   case 'T':
     testPositionControl();
     break;
+  case 'P':
+    waypointPose();
+    break;
 
   default:
     drone->hover();
@@ -91,5 +100,21 @@ void DialogKeyboard::testPositionControl() {
     drone->posCtrl(true);
     std::cout << "Flying to (4.5,-4.5, 6) with position control." << std::endl;
     drone->moveTo(4.5, -4.5, 6);
+  }
+}
+
+void DialogKeyboard::waypointPose() {
+  if (drone->isPosctrl) {
+    drone->posCtrl(false);
+    std::cout << "position control off!" << std::endl;
+  } else {
+    drone->posCtrl(true);
+    while (wp < 6) {
+      ROS_INFO("Flying to (%f, %f, 5) with position control",vetorwpx[wp], vetorwpy[wp]);
+      drone->moveTo(vetorwpx[wp], vetorwpy[wp], 5);
+      wp++;
+      usleep(10 * microsecond);//sleeps for 3 second
+    }
+    
   }
 }
