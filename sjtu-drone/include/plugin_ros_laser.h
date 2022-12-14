@@ -13,14 +13,14 @@
 namespace gazebo {
 class RosLaserPlugin: public SensorPlugin{
 public:
-    RosLaserPlugin(){topicName = "drone/laser_scan";}
+    RosLaserPlugin(){topicName = "drone/laser";}
     virtual ~RosLaserPlugin(){}
 
     virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
-    virtual void onUpdated();
+    virtual void onNewLaserScans();
 
 protected:
-    sensors::GpuRaySensorPtr laser;
+    sensors::RaySensorPtr laser;
 
     event::ConnectionPtr updated_conn;
 
