@@ -33,17 +33,16 @@ void RosLaserPlugin::onNewLaserScans(){
     laser_msg.header.stamp.nsec = this->laser->LastUpdateTime().nsec;
     laser_msg.header.seq = this->laser->ParentId();
 
-    laser_msg.angle_increment = 0.523;
-    laser_msg.angle_max = 1.570796;
-    laser_msg.angle_min = -1.570796;
+    laser_msg.angle_increment = this->laser->AngleResolution();
+    laser_msg.angle_max = this->laser->AngleMax().Radian();
+    laser_msg.angle_min = this->laser->AngleMin().Radian();
 
-    laser_msg.time_increment = (1/40) / (100);
     laser_msg.range_max = this->laser->RangeMax();
     laser_msg.range_min = this->laser->RangeMin();
 
     uint32_t range_count = (laser_msg.angle_max - laser_msg.angle_min)/laser_msg.angle_increment;
 
-    laser_msg.ranges.assign(range_count, this->laser->RangeResolution());
+    laser_msg.ranges.assign(range_count, this->laser->Range(range_count));
     
     laser_msg.intensities.assign(range_count, 0);
 

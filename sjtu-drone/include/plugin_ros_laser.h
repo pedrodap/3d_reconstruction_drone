@@ -8,6 +8,7 @@
 #include "sensor_msgs/PointCloud2.h"
 #include "laser_geometry/laser_geometry.h"
 #include <tf/transform_listener.h>
+#include <ignition/math/Angle.hh>
 
 
 namespace gazebo {
