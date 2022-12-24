@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS 
     roscpp
-    angles
     rospy
     std_msgs
     sensor_msgs
