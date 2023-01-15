@@ -2,6 +2,9 @@
 #define PLUGIN_ROS_LASER_H
 
 #include "gazebo/common/Plugin.hh"
+#include "gazebo/sensors/CameraSensor.hh"
+#include "gazebo/rendering/RenderTypes.hh"
+#include "gazebo/util/system.hh"
 #include "gazebo/gazebo.hh"
 #include <ros/ros.h>
 #include "sensor_msgs/LaserScan.h"
@@ -14,16 +17,20 @@
 namespace gazebo {
 class RosLaserPlugin: public SensorPlugin{
 public:
-    RosLaserPlugin(){topicName = "drone/laser";}
+    RosLaserPlugin(){topicName = "/velodyne_cloud_2";}
     virtual ~RosLaserPlugin(){}
 
     virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
-    virtual void onNewLaserScans();
+    virtual void OnNewLaserFrame(const float *_image,
+                unsigned int _width, unsigned int _height,
+                unsigned int _depth, const std::string &_format);
 
 protected:
-    sensors::RaySensorPtr laser;
+    sensors::GpuRaySensorPtr laser;
 
     event::ConnectionPtr updated_conn;
+
+    unsigned int width, height/*, depth*/;
 
     sensor_msgs::LaserScan laser_msg;
     sensor_msgs::PointCloud2 cloud;

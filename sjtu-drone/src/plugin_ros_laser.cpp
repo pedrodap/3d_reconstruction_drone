@@ -1,31 +1,28 @@
 #include "plugin_ros_laser.h"
-#include "gazebo/sensors/RaySensor.hh"
+#include "gazebo/sensors/GpuRaySensor.hh"
 namespace gazebo{
 void RosLaserPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr /*_sdf*/){
-    // Make sure the ROS node for Gazebo has already been initialized
-    if (!ros::isInitialized())
-    {
-      ROS_INFO("ROS should be initialized first!");
-      return;
-    }
+    this->laser =std::dynamic_pointer_cast<sensors::GpuRaySensor>(_sensor);
 
-    if (!_sensor)
-        gzerr << "Invalid sensor pointer.\n";
-    this->laser = std::dynamic_pointer_cast<sensors::RaySensor>(_sensor);
+  if (!this->laser)
+  {
+    gzerr << "GpuRayPlugin not attached to a GpuLaser sensor\n";
+    return;
+  }
 
-    if (!this->laser){
-        gzerr << "LaserPlugin equires a LaserSensor.\n";
-        return;
-    }
+  this->width = this->laser->RangeCount();
+  this->height = this->laser->VerticalRangeCount();
 
-    ROS_INFO("The Laser plugin has been loaded!");
+  this->updated_conn = this->laser->ConnectNewLaserFrame(
+      boost::bind(&RosLaserPlugin::OnNewLaserFrame,
+        this, _1, _2, _3, _4, _5));
 
-    node_handle = new ros::NodeHandle("");
-    pub = node_handle->advertise<sensor_msgs::PointCloud2>(topicName, 1, false);
-    this->updated_conn = this->laser->ConnectUpdated(boost::bind(&RosLaserPlugin::onNewLaserScans,this));
+  this->laser->SetActive(true);
 }
 
-void RosLaserPlugin::onNewLaserScans(){
+void RosLaserPlugin::OnNewLaserFrame(const float * /*_image*/,
+    unsigned int /*_width*/, unsigned int /*_height*/,
+    unsigned int /*_depth*/, const std::string &/*_format*/){
     //copy data into ros message
     
     laser_msg.header.frame_id = "drone_link";
