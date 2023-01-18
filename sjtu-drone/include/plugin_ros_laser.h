@@ -17,7 +17,7 @@
 namespace gazebo {
 class RosLaserPlugin: public SensorPlugin{
 public:
-    RosLaserPlugin(){topicName = "/velodyne_cloud_2";}
+    RosLaserPlugin(){topicName = "/velodyne_points";}
     virtual ~RosLaserPlugin(){}
 
     virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);

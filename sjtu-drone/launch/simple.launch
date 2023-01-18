@@ -25,9 +25,7 @@
   </include>
 
    <!-- send robot urdf to param server -->
-   <arg name="gpu" default="false"/>
-   <arg name="organize_cloud" default="false"/>
-   <param name="robot_description" command="$(find xacro)/xacro '$(find sjtu_drone)/urdf/sjtu_drone.urdf' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+   <param name="robot_description" command="$(find xacro)/xacro '$(find sjtu_drone)/urdf/sjtu_drone.urdf'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo at the origin, change x,y,z arguments to spawn in a different position -->
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model sjtu_drone -x 0 -y 0 -z 0"
