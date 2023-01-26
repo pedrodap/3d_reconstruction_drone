@@ -19,8 +19,8 @@ bool isVelMode = false;
 bool isPosctrl = false;
 
 int wp=0;
-double vetorwpx[6]={2,1,3,-2,3,0};
-double vetorwpy[6]={1,2,2,3,-3,0};
+double vetorwpx[6]={1,1,1,2,2,0};
+double vetorwpy[6]={1,2,3,1,2,0};
 unsigned int microsecond = 1000000;
 
 void moveTo(float x, float y, float z) {
