@@ -13,6 +13,7 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/filter.h>
 #include <pcl/surface/poisson.h>
+#include <pcl/surface/mls.h>
 #include <pcl/common/impl/io.hpp>
 #include <pcl/filters/statistical_outlier_removal.h>
 
@@ -42,10 +43,10 @@ namespace syncAndTfPointCloud
                 countPoint(0),
                 countMesh(0)
             {
-                pointCloudSub.subscribe(n,"/velodyne_points",10);
+                pointCloudSub.subscribe(n,"/velodyne_cloud_registered",50);
                 odometrySub.subscribe(n,"/aft_mapped_to_init_high_frec",1000);
 
-                syncPointer.reset(new AppSync(syncPointCloudOdometry(10),pointCloudSub, odometrySub));
+                syncPointer.reset(new AppSync(syncPointCloudOdometry(100),pointCloudSub, odometrySub));
                 syncPointer->registerCallback(boost::bind(&transformPointCloud::callback, this, _1, _2));
             }
         private:
