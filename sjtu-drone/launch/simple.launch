@@ -11,7 +11,7 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="verbose" default="false"/>
-  <arg name="world_name" default="$(find sjtu_drone)/worlds/cafe.world"/>
+  <arg name="world_name" default="$(find sjtu_drone)/worlds/small_city.world"/>
 
   <!-- launch the custom world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch" >

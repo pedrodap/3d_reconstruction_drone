@@ -19,8 +19,8 @@ bool isVelMode = false;
 bool isPosctrl = false;
 
 int wp=0;
-double vetorwpx[6]={1,1,1,2,2,0};
-double vetorwpy[6]={1,2,3,1,2,0};
+double vetorwpx[6]={1,4,1,2,5,0};
+double vetorwpy[6]={1,2,3,4,3,0};
 unsigned int microsecond = 1000000;
 
 void moveTo(float x, float y, float z) {
@@ -68,7 +68,7 @@ void waypointPose(void) {
   for (wp = 0; wp < 6;wp++) {
     ROS_INFO("Flying to (%f, %f, 2) with position control",vetorwpx[wp], vetorwpy[wp]);
     moveTo(vetorwpx[wp], vetorwpy[wp], 2);
-    usleep(10 * microsecond);
+    usleep(20 * microsecond);
   }
 }
 

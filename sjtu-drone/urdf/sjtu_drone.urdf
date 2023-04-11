@@ -129,10 +129,12 @@
         </ray>
         <plugin name="ray_sonar_sensor" filename="libgazebo_ros_velodyne_gpu_laser.so">
           <topicName>/velodyne_points</topicName>
+          <frameName>velodyne</frameName>
           <static_reference_frame>base_link</static_reference_frame>
-          <organize_cloud>false</organize_cloud>
+          <organize_cloud>true</organize_cloud>
           <min_range>0.2</min_range>
           <max_range>10.0</max_range>
+          <gaussianNoise>0.008</gaussianNoise>
         </plugin>
       </sensor>
 
