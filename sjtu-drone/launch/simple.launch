@@ -28,7 +28,7 @@
   <arg name="gpu" default="false"/>
   <arg name="organize_cloud" default="false"/>
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find sjtu_drone)/urdf/sjtu_drone.urdf.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
-  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -param /robot_description -model sjtu_drone -x 0 -y 0 -z 1"
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -param /robot_description -model sjtu_drone -x 0 -y 0 -z 0"
   respawn="false" output="screen" />
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
