@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /GT1
+        - /odometry1
         - /odometry1/odomPath1
         - /Image1
       Splitter Ratio: 0.5
@@ -136,34 +137,6 @@ Visualization Manager:
           Shaft Length: 0.10000000149011612
           Topic: /laser_odom_path
           Unreliable: false
-          Value: true
-        - Alpha: 1
-          Autocompute Intensity Bounds: true
-          Autocompute Value Bounds:
-            Max Value: 10
-            Min Value: -10
-            Value: true
-          Axis: Z
-          Channel Name: intensity
-          Class: rviz/PointCloud2
-          Color: 255; 255; 255
-          Color Transformer: FlatColor
-          Decay Time: 0
-          Enabled: true
-          Invert Rainbow: false
-          Max Color: 255; 255; 255
-          Min Color: 0; 0; 0
-          Name: PointCloud2
-          Position Transformer: XYZ
-          Queue Size: 10
-          Selectable: true
-          Size (Pixels): 3
-          Size (m): 0.05000000074505806
-          Style: Flat Squares
-          Topic: /velodyne_cloud_2
-          Unreliable: false
-          Use Fixed Frame: true
-          Use rainbow: true
           Value: true
       Enabled: true
       Name: odometry
@@ -632,7 +605,13 @@ Visualization Manager:
         All Enabled: true
         aft_mapped:
           Value: true
+        base_link:
+          Value: true
         camera_init:
+          Value: true
+        velodyne:
+          Value: true
+        velodyne_base_link:
           Value: true
       Marker Scale: 1
       Name: TF
